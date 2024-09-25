@@ -1,30 +1,56 @@
-// import { useState } from 'react'
 import { useEffect, useState } from "react";
 import { fetchImages } from "./Components/api";
+import ImagesGallery from "./Components/ImagesGallery/ImagesGallery";
+import Loader from "./Components/Loader/Loader";
+import ErrorMessage from "./Components/ErrorMessage/ErrorMessage";
+// import ImageCard from "./Components/ImageCard/ImageCard";
+import LoadMore from "./Components/LoadMore/LoadMore";
+import SearchBar from "./Components/SearchBar/SearchBar";
 
 const App = () => {
   const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  // const [imageModal, setImageModal] = useState(false);
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState([]);
+
   useEffect(() => {
     const getImages = async () => {
-      const data = await fetchImages();
-
-      setImages(data);
+      try {
+        setIsError(false);
+        setIsLoading(true);
+        const data = await fetchImages(page, query);
+        setIsLoading(false);
+        setImages((prev) => [...prev, ...data]);
+      } catch {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
     };
     getImages();
-  }, []);
+  }, [page, query]);
+
+  const handleChangePage = () => {
+    setPage((prev) => prev + 1);
+  };
+
+  const handleSetQuery = topic => {
+    setQuery(topic);
+    setImages([]);
+  };
 
   return (
     <div>
-      <ul>
-        {images.map((image) => (
-          <li key={image.id}>
-            <h2></h2>
-            <a href={image.url}>
-              <img src={image.urls.small} alt={image.alt_descriptions}></img>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <SearchBar setQuery={handleSetQuery}/>
+      {images.length > 0 && <ImagesGallery images={images} />}
+
+      <LoadMore handleChangePage={handleChangePage} />
+
+      {isLoading && <Loader />}
+      {isError && <ErrorMessage />}
+      {/* <ImageCard isModal={imageModal} setImageModal={setImageModal} /> */}
     </div>
   );
 };
