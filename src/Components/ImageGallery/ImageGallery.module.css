@@ -1,0 +1,9 @@
+.list{
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px 4px;
+}
+.item{
+    height: 30vp;
+}
