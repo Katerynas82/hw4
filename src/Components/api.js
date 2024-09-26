@@ -6,7 +6,7 @@ export const fetchImages = async (page = 1, query = "nature") => {
       client_id: "0oF3nb1J595yYJndGrVqpu1GVXu4aNoTMPI4FFirbiI",
       query: query,
       page: page,
-      per_page: 9,
+      per_page: 8,
     },
   });
   return data.results;

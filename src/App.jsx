@@ -3,17 +3,18 @@ import { fetchImages } from "./Components/api";
 import ImagesGallery from "./Components/ImagesGallery/ImagesGallery";
 import Loader from "./Components/Loader/Loader";
 import ErrorMessage from "./Components/ErrorMessage/ErrorMessage";
-// import ImageCard from "./Components/ImageCard/ImageCard";
-import LoadMore from "./Components/LoadMore/LoadMore";
+import LoadMoreBtn from "./Components/LoadMoreBtn/LoadMoreBtn";
 import SearchBar from "./Components/SearchBar/SearchBar";
+import ImageModal from "./Components/ImageModal/ImageModal";
 
 const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  // const [imageModal, setImageModal] = useState(false);
+  const [imageModal, setImageModal] = useState(false);
+  const [largeImageUrl, setLargeImageUrl] = useState("");
   const [page, setPage] = useState(1);
-  const [query, setQuery] = useState([]);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const getImages = async () => {
@@ -29,35 +30,45 @@ const App = () => {
         setIsLoading(false);
       }
     };
-    getImages();
+    if (query) {
+      getImages();
+    }
   }, [page, query]);
 
   const handleChangePage = () => {
     setPage((prev) => prev + 1);
   };
 
-  const handleSetQuery = topic => {
+  const handleSetQuery = (topic) => {
     setQuery(topic);
     setImages([]);
+    setPage(1);
+  };
+  const handleImageClick = (url) => {
+    setLargeImageUrl(url);
+    setImageModal(true);
   };
 
   return (
     <div>
-      <SearchBar setQuery={handleSetQuery}/>
-      {images.length > 0 && <ImagesGallery images={images} />}
-
-      <LoadMore handleChangePage={handleChangePage} />
+      <SearchBar setQuery={handleSetQuery} />
+      {images.length > 0 && (
+        <ImagesGallery images={images} handleImageClick={handleImageClick} />
+      )}
+      {images.length > 0 && !isLoading && (
+        <LoadMoreBtn handleChangePage={handleChangePage} />
+      )}
 
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {/* <ImageCard isModal={imageModal} setImageModal={setImageModal} /> */}
+
+      <ImageModal
+        imageModal={imageModal}
+        setImageModal={setImageModal}
+        largeImageUrl={largeImageUrl}
+      />
     </div>
   );
 };
 
 export default App;
-//  axios
-//    .get(
-//      "https://api.unsplash.com/photos/?client_id=0oF3nb1J595yYJndGrVqpu1GVXu4aNoTMPI4FFirbiI"
-//    )
-//    .then((res) => console.log(r

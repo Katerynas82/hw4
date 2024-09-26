@@ -1,39 +1,34 @@
-// import Modal from "react-modal";
+import Modal from "react-modal";
+import style from "../ImageModal/ImageModal.module.css";
 
-// const ImageModal = (setImageModal) => {
-//     const customStyles = {
-//       content: {
-//         top: "50%",
-//         left: "50%",
-//         right: "auto",
-//         bottom: "auto",
-//         marginRight: "-50%",
-//         transform: "translate(-50%, -50%)",
-//       },
-//     };
-//     function openModal() {
-//       setImageModal(true);
-//     }
+const ImageModal = ({imageModal, setImageModal, largeImageUrl}) => {
+    // const customStyles = {className=style.content}
+    // };
+    
+      function closeModal() {
+      setImageModal(false);
+    }
+  return (
+    <>
+      <div>
+        <Modal
+          isOpen={imageModal}
+          onRequestClose={closeModal}
+          style={style.content}
+          contentLabel="Image Modal"
+          shouldCloseOnOverlayClick={true}
+          shouldCloseOnEsc={true}
+        >
+          <div className={style.overlayModal}>
+            <button onClick={closeModal}>close</button>
+            {largeImageUrl && (
+              <img  src={largeImageUrl} alt="Large view" />
+            )}
+          </div>
+        </Modal>
+      </div>
+    </>
+  );
+};
 
-//       function closeModal() {
-//       setImageModal(false);
-//     }
-//   return (
-//     <div>
-//       <Modal
-//         isOpen={modalIsOpen}
-//         onAfterOpen={afterOpenModal}
-//         onRequestClose={closeModal}
-//         style={customStyles}
-//         contentLabel="Example Modal"
-//       >
-        
-//         <button onClick={closeModal}>close</button>
-       
-        
-//       </Modal>
-//     </div>
-//   );
-// };
-
-// export default ImageModal;
+export default ImageModal;

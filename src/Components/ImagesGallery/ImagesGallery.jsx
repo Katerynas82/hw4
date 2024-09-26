@@ -1,10 +1,11 @@
 import ImageCard from "../ImageCard/ImageCard";
+import style from "../ImagesGallery/ImagesGallery.module.css";
 
-const ImagesGallery = ({images}) => {
+const ImagesGallery = ({images, handleImageClick}) => {
   return (
     <div>
-      <ul>
-        <ImageCard images={images}/>
+      <ul className= {style.gallery}>
+        <ImageCard images={images} handleImageClick={handleImageClick}/> 
       </ul>
     </div>
   );

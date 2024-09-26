@@ -1,58 +1,35 @@
-import { useState } from "react";
-// import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
-import {Formik, Form, Field} from 'formik';
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import style from '../SearchBar/SearchBar.module.css';
+
 
 const SearchBar = ({ setQuery, onSubmit }) => {
-  const [inputValue, setInputValue] = useState("");
-  const initialValues = {query: "",};
+  const initialValues = { query: "" };
 
-  const handleSubmit = ( values) => {
-    setQuery(values.query)
-    // evt.preventDefault();
-    if (inputValue.trim() === "") {
-      toast.error("Please enter a search term!");
+  const handleSubmit = (values, { resetForm }) => {
+    if (!values.query || values.query.trim() === "") {
+   
+           toast.error("Please enter a search term!");
       return;
     }
-    onSubmit(inputValue);
-    setInputValue("");
-  };
 
-//   const handleInputChange = (evt) => {
-//     setInputValue(evt.target.value);
-//   };
+    setQuery(values.query);
+    onSubmit(values.query);
+    resetForm();
+  };
 
   return (
     <>
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-        <Form>
-          <Field
-            name="query"
-            // type="text"
-            // autoComplete="off"
-            // autoFocus
-            placeholder="Search images and photos"
-            // value={inputValue}
-            // onChange={setQuery}
-          />
-          <button type="submit">Search</button>
-        </Form>
-      </Formik>
-      {/* <header>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="searchInput"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={inputValue}
-            onChange={handleInputChange}
-          />
-          <button type="submit">Search</button>
-        </form>
+      <header className={style.header}>
+        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+          <Form>
+            <Field className={style.input} name="query" placeholder="Search images and photos" />
+            <button className={style.button} type="submit">Search</button>
+          </Form>
+        </Formik>
       </header>
-      <ErrorMessage /> */}
+      <ErrorMessage/>
     </>
   );
 };
