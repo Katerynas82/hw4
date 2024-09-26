@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchImages } from "./Components/api";
+import { fetchImages } from "./services/api";
 import ImagesGallery from "./Components/ImagesGallery/ImagesGallery";
 import Loader from "./Components/Loader/Loader";
 import ErrorMessage from "./Components/ErrorMessage/ErrorMessage";
